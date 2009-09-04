@@ -1,0 +1,38 @@
+
+# BitVector is a vector of BitVals of finite-size
+# note that BitV[0] is bit0
+BitV(Size) : [BitVal]
+  len :: BitV x -> Int
+  # BitV equality. how to define equality between
+  # BitVs of different sizes? i think we'll need separate
+  # operations
+  == :: BitV v => v -> v -> Int -> Bool
+  == _ _ 0 -> True
+  == [x|foo] [y|bar] n when n > 0 ->
+    if x /= y -> False
+    else (== foo bar n-1)
+
+  and :: BitV v => v -> v -> v
+  and x y -> BitV len(x), (zip and x y)
+
+  # Substring; ability to derive BitVs of <= size from existing
+
+  # Extension; derive BitVs of >= size from existing
+      # sign extend
+      # zero extend
+
+  # Truncation - demonstrate that bits can fall off the end(s)
+
+  # Operations:
+  # Read
+  # Write
+  # Copy
+
+  # Shift Left/Right
+  # Addition
+  # Subtraction
+  # Multiplication
+  # Division
+
+# TODO: instantiating bitvectors from integers of other bases
+

@@ -1,0 +1,60 @@
+
+Registers
+
+Bit vectors of length 16
+
+    01234567 89ABCDEF
+CS [                 ] Code Segment
+DS [                 ] Data Segment
+ES [                 ] Extra Segment
+SS [                 ] Stack Segment
+
+IP [                 ] Instruction Pointer
+SP [                 ] Stack Pointer
+BP [                 ] Base Pointer
+
+F  [                 ] FLAGS (Status)
+
+SI [                 ] Source Index
+DI [                 ] Destination Index
+
+AX [   AL   |   AH   ] Accumulator
+BX [   BL   |   BH   ] Base
+CX [   CL   |   CH   ] Counter
+DX [   DL   |   DH   ] Data
+
+Question: is it worth naming the Hs and Ls or is it simpler to
+          define them as substrings of their parent regs?
+
+FLAGS - Intel 8086 Family Flags Register
+# Name Description
+0 CF   Carry flag
+1 --   1
+2 PF   Parity
+3 --   0
+4 AF   Auxiliary flag
+5 --   0
+6 ZF   Zero flag
+7 SF   Sign flag
+8 TP   Trap flag (single step)
+9 IF   Interrupt flag
+A DF   Direction flag
+B OF   Overflow flag
+C --
+D --
+E --
+F --   0
+
+Register  Default Segment   Valid Overrides
+BP  SS  DS, ES, CS
+SI or DI  DS  ES, SS, CS
+DI strings  ES  None
+SI strings  DS  ES, SS, CS 
+
+Memory
+
+
+
+References
+1. http://home.comcast.net/~fbui/intel.html#arch
+

@@ -1,0 +1,67 @@
+
+BitVal = 0 | 1 | Any | Unknown
+
+== :: BitVal a => a -> a -> bool
+== Unknown _ -> False
+== _ Unknown -> False
+== Any _ -> True
+== _ Any -> True
+== 0 0 -> True
+== 1 1 -> True
+== _ _ -> False
+
+# AND
+and :: BitVal a => a -> a -> a
+and Unknown _ -> Unknown
+and _ Unknown -> Unknown
+and Any _ -> Unknown
+and _ Any -> Unknown
+and 1 1 -> 1
+and _ _ -> 0
+
+# NAND
+and :: BitVal a => a -> a -> a
+and Unknown _ -> Unknown
+and _ Unknown -> Unknown
+and Any _ -> Unknown
+and _ Any -> Unknown
+and 0 0 -> 1
+and _ _ -> 0
+
+# OR
+or :: BitVal a => a -> a -> a
+or Unknown _ -> Unknown
+or _ Unknown -> Unknown
+or Any _ -> Unknown
+or _ Any -> Unknown
+or 0 0 -> 0
+or _ _ -> 1
+
+# NOR
+nor :: BitVal a => a -> a -> a
+nor Unknown _ -> Unknown
+nor _ Unknown -> Unknown
+nor Any _ -> Unknown
+nor _ Any -> Unknown
+nor 0 0 -> 1
+nor _ _ -> 0
+
+# XOR
+xor :: BitVal a => a -> a -> a
+xor Unknown _ -> Unknown
+xor _ Unknown -> Unknown
+xor Any _ -> Unknown
+xor _ Any -> Unknown
+xor 0 0 -> 0
+xor 1 1 -> 0
+xor _ _ -> 1
+
+# XNOR
+xnor :: BitVal a => a -> a -> a
+xnor Unknown _ -> Unknown
+xnor _ Unknown -> Unknown
+xnor Any _ -> Unknown
+xnor _ Any -> Unknown
+
+#XAND
+

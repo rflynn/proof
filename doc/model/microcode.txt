@@ -1,0 +1,22 @@
+
+
+Microcode:
+
+  if/else
+
+  Some sort of MOV, but how to define?
+  
+  dst <- src    overwrite contents of dst with contents of src
+                all bitv must have readable/writable attributes
+    
+    would it be easier to define mov like this instead?
+    
+    mov1(dst, src)
+    mov8(dst, src)
+    mov16(dst, src)
+    
+    or
+  
+    mov(dst, src, bitcnt)
+
+

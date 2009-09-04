@@ -1,0 +1,34 @@
+
+Create formal model of x86 architecture so that x86 machine language programs
+may be proved.
+  
+  Create formal model of 8086.
+    
+    Create formal model of binary computer containing registers, memory
+    and operations.
+
+      Create formal model of abstract machine containing synchronous
+      and asynchrous operation and input/output.
+
+      Create formal model of binary operations on fixed-width bit vectors.
+
+Bit/Boolean
+  BitVector
+    Immediate
+      Register
+
+Modes
+  Per-Mode Exceptions
+  EFLAGS
+ 
+Memory
+  Real-Mode
+
+Map instructions -> read, write, exceptions
+
+Stacks
+  PUSH/POP
+  CALL/LEAVE
+
+
+
