@@ -1,5 +1,5 @@
 
-theory Boolean
+theory Bit
 imports Main
 begin
 
