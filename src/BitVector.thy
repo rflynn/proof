@@ -82,16 +82,24 @@ theorem cmp_neq [iff]: "(Eq \<noteq> (cmp (replicate n x) (replicate n (\<not>x)
 *)
 
 definition lt :: "bitv \<Rightarrow> bitv \<Rightarrow> bool" (infixr "<" 50) where
-"lt xs ys \<equiv> (Lt = cmp (rev xs) (rev ys))"
+"lt xs ys \<equiv> cmp (rev xs) (rev ys) = Lt"
 
 definition lteq :: "bitv \<Rightarrow> bitv \<Rightarrow> bool" (infixr "\<le>" 50) where
-"lteq xs ys \<equiv> let e = cmp (rev xs) (rev ys) in (e = Lt \<or> e = Eq)"
+"lteq xs ys \<equiv>
+  let
+    e = cmp (rev xs) (rev ys)
+  in
+   e = Lt \<or> e = Eq"
 
 definition gt :: "bitv \<Rightarrow> bitv \<Rightarrow> bool" (infixr ">" 50) where
-"gt xs ys \<equiv> (Gt = cmp (rev xs) (rev ys))"
+"gt xs ys \<equiv> cmp (rev xs) (rev ys) = Gt"
 
-definition gteq :: "bitv \<Rightarrow> bitv \<Rightarrow> bool" (infixr "\<ge>" 50) where
-"gteq xs ys \<equiv> let e = cmp (rev xs) (rev ys) in (e = Gt \<or> e = Eq)"
+definition gteq :: "bitv \<Rightarrow> bitv \<Rightarrow> bool" where
+"gteq xs ys \<equiv>
+  let
+    e = cmp (rev xs) (rev ys)
+  in
+   e = Gt \<or> e = Eq"
 
 (* * Binary Operations * *)
 
@@ -213,7 +221,7 @@ definition first1 :: "bitv \<Rightarrow> nat" where
 definition last1 :: "bitv \<Rightarrow> nat" where
 "last1 v \<equiv>
   let
-    s = (size v);
+    s = size v;
     f = first1 (rev v)
   in
    if s = f then s
@@ -232,12 +240,75 @@ definition first0 :: "bitv \<Rightarrow> nat" where
 definition last0 :: "bitv \<Rightarrow> nat" where
 "last0 v \<equiv>
   let
-    s = (size v);
+    s = size v;
     f = first0 (rev v)
   in
    if s = f then s
    else s - f - 1"
 
 (* TODO: theorems about {first,last}[01] *)
+
+(*
+ * given a natural n and power of 2 x \<ge> n, return the individual bits of n.
+ * if bitv was composed of {0,1} we could abstract this to a generalized
+ * n-ary number conversion.
+ *)
+fun bindown :: "nat \<Rightarrow> nat \<Rightarrow> bitv" where
+"bindown n 0 = []" |
+"bindown n x = (if n \<ge> x
+                then True # (bindown (n - x) (x div 2))
+                else False # (bindown n (x div 2)))"
+
+(* TODO: prove result length relation to ceil(log(x)/log(2)) *)
+
+fun bin8 :: "nat \<Rightarrow> bitv" where
+"bin8 n = (if n \<ge> 256
+          then (bin8 (n mod 256))
+          else rev (bindown n (256 div 2)))"
+
+value "bin8 0"
+value "bin8 128"
+value "bin8 255"
+value "bin8 256"
+
+(*
+definition bin1  :: "nat \<Rightarrow> bitv" where "bin1 n  = binx n 2"
+definition bin2  :: "nat \<Rightarrow> bitv" where "bin2 n  = binx n 4"
+definition bin4  :: "nat \<Rightarrow> bitv" where "bin4 n  = binx n 16"
+definition bin16 :: "nat \<Rightarrow> bitv" where "bin16 n = binx n 65536"
+definition bin32 :: "nat \<Rightarrow> bitv" where "bin32 n = binx n 8"
+*)
+
+(* given an arbitrary nat n and power of 2 x, double x until it is \<ge> n *)
+fun binup :: "nat \<Rightarrow> nat \<Rightarrow> nat" where
+"binup n 0 = binup n 1" |
+"binup n x =
+  (if x < n
+   then binup n (x * 2)
+   else x)"
+
+(*
+ * convert a nat to a base-2 representation
+ *)
+fun bin :: "nat \<Rightarrow> bitv" where
+"bin n = bindown n (binup n 1)"
+
+(*
+ * convert a bitv to its natural number representation
+ *)
+fun decx :: "bitv \<Rightarrow> nat \<Rightarrow> nat \<Rightarrow> nat" where
+"decx []     _   ac = ac" |
+"decx (x#xs) fac ac =
+  decx xs (fac * 2)
+    (if x then ac + fac else ac)"
+
+definition dec :: "bitv \<Rightarrow> nat" where
+"dec v = decx v 1 0"
+
+value "dec [False]"
+value "(int (dec [False,True]))"
+value "(int (dec [True,True]))"
+
+(* TODO: prove that dec(bin x) = x *)
 
 end
